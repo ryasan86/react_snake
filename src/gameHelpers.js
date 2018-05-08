@@ -1,3 +1,4 @@
+// game helpers
 export default {
   snake: { height: 10, position: 2 },
   fruit: { height: 40, position: 22 },
@@ -39,6 +40,7 @@ export default {
   }
 };
 
+// helper helpers
 const createGridRow = color => {
   return new Array(30).fill(color);
 };
