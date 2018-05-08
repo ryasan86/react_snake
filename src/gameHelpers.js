@@ -15,7 +15,12 @@ export default {
   createBorders: gridCopy => {
     for (let i = 0; i < gridCopy.length; i++) {
       for (let j = 0; j < gridCopy[i].length; j++) {
-        if (i === 0) {
+        if (
+          i === 0 ||
+          i === gridCopy.length - 1 ||
+          j === 0 ||
+          j === gridCopy[i].length - 1
+        ) {
           gridCopy[i][j] = 'white';
         }
       }
