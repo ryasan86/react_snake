@@ -3,10 +3,16 @@ import GridCell from './GridCell';
 
 export default class GridRow extends Component {
   render() {
-    return (
-      <div>
-        <GridCell />
-      </div>
-    );
+    const style = {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    };
+
+    const row = this.props.row.map((cell, index) => (
+      <GridCell key={index} cell={cell} />
+    ));
+
+    return <div style={style}>{row}</div>;
   }
 }

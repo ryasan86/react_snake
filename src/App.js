@@ -15,7 +15,7 @@ class App extends Component {
 
   render() {
     return (
-      <div align="center">
+      <div>
         <Grid grid={this.state.grid} />
       </div>
     );
