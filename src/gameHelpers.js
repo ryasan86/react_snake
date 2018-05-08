@@ -1,9 +1,20 @@
 export default {
   snake: { height: 10, position: 2 },
+  fruit: { height: 40, position: 22 },
   createGrid: () => {
     let grid = [];
     for (let i = 0; i < 60; i++) {
-      grid.push(new Array(30).fill('black'));
+      let row;
+      // top row
+      if (i === 0 || i === 59) {
+        row = createGridRow('white');
+        // bottom row
+      } else {
+        row = createGridRow('black');
+      }
+      row[0] = 'white'; // first column
+      row[30] = 'white'; // last column
+      grid.push(row);
     }
     return grid;
   },
@@ -26,4 +37,8 @@ export default {
       }
     }
   }
+};
+
+const createGridRow = color => {
+  return new Array(30).fill(color);
 };
