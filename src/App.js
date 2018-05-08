@@ -6,35 +6,30 @@ import Grid from './components/Grid';
 class App extends Component {
   constructor() {
     super();
-    let grid = gameHelpers.createGrid()
+    let grid = gameHelpers.createGrid();
     let snake = gameHelpers.snake;
+    grid[snake.height][snake.position] = 'green';
 
     this.state = {
-      // starting grid
       grid,
-      // starting snake
       snake
     };
 
-
     this.timer = setInterval(() => {
-      
       // copy of grid to change
       let gridCopy = [];
-      gameHelpers.createGridCopy(gridCopy)
-      // create borders
-      for (let i = 0; i < gridCopy.length; i++) {
-        for (let j = 0; j < gridCopy[i].length; j++) {
-          if (i === 0) {
-            gridCopy[i][j] = 'white'
-          }
-        }
-      }
+      let snakeCopy = this.state.snake;
 
+      gameHelpers.createGridCopy(gridCopy);
+      // create borders
+      gameHelpers.createBorders(gridCopy);
+
+      gridCopy[snakeCopy.height][snakeCopy.position] = 'green';
       // change game data
       this.setState({
-        grid: gridCopy
-      })
+        grid: gridCopy,
+        snake: snakeCopy
+      });
     }, 750);
   }
 
