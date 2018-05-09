@@ -37,6 +37,29 @@ export default {
         }
       }
     }
+  },
+  changeSnakeDirection: (e, direction) => {
+    if (e.keyCode === 65) {
+      direction = 'left';
+    } else if (e.keyCode === 68) {
+      direction = 'right';
+    } else if (e.keyCode === 87) {
+      direction = 'up';
+    } else if (e.keyCode === 83) {
+      direction = 'down';
+    }
+    return direction;
+  },
+  moveSnake: (gridCopy, snakeCopy, direction) => {
+    if (direction === 'left') {
+      return gridCopy[snakeCopy.height][snakeCopy.position--];
+    } else if (direction === 'right') {
+      return gridCopy[snakeCopy.height][snakeCopy.position++];
+    } else if (direction === 'up') {
+      return gridCopy[snakeCopy.height--][snakeCopy.position];
+    } else if (direction === 'down') {
+      return gridCopy[snakeCopy.height++][snakeCopy.position];
+    }
   }
 };
 
