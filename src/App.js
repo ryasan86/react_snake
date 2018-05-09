@@ -7,11 +7,11 @@ class App extends Component {
   constructor() {
     super();
     const grid = gameHelpers.createGrid();
-    // CHANGE ME
     const snake = gameHelpers.snake;
     const fruit = gameHelpers.fruit;
-    // CHANGE ME
-    grid[snake.height][snake.position] = 'green';
+    snake.forEach(segment => {
+      gameHelpers.createSnakeSegment(grid, segment);
+    });
     grid[fruit.height][fruit.position] = 'red';
     this.state = {
       grid,
@@ -26,24 +26,31 @@ class App extends Component {
         return;
       }
       // copy of grid to change
-      let gridCopy = [];
-      let snakeCopy = this.state.snake;
-      let fruitCopy = this.state.fruit;
-      let direction = this.state.direction;
+      const gridCopy = [];
+      const snakeCopy = this.state.snake;
+      const fruitCopy = this.state.fruit;
+      const direction = this.state.direction;
 
       gameHelpers.createGridCopy(gridCopy);
       gameHelpers.createBorders(gridCopy);
-      gameHelpers.moveSnake(gridCopy, snakeCopy, direction);
+      snakeCopy.forEach(segment => {
+        gameHelpers.moveSnakeSegment(gridCopy, segment, direction);
+      });
       gameHelpers.checkWallCrash(snakeCopy, this.setState.bind(this));
-      // eat fruit
+
+      // console.log(
+      //   `height: ${snakeCopy[0].height} position: ${snakeCopy[0].position}`
+      // );
       if (
-        snakeCopy.height === fruitCopy.height &&
-        snakeCopy.position === fruitCopy.position
+        snakeCopy[0].height === fruitCopy.height &&
+        snakeCopy[0].position === fruitCopy.position
       ) {
+        console.log('eat fruit');
       }
 
-      // set snake and fruit
-      gridCopy[snakeCopy.height][snakeCopy.position] = 'green';
+      snakeCopy.forEach(segment => {
+        gridCopy[segment.height][segment.position] = 'green';
+      });
       gridCopy[fruitCopy.height][fruitCopy.position] = 'red';
 
       // change game data
@@ -61,7 +68,6 @@ class App extends Component {
 
   handleSnakeDirection(e) {
     const { direction } = this.state;
-
     this.setState({
       direction: gameHelpers.changeSnakeDirection(e, direction)
     });
@@ -77,7 +83,6 @@ class App extends Component {
         }}
         onKeyDown={e => this.handleSnakeDirection(e)}
       >
-        <h1 align="center">Still Building This :D</h1>
         <Grid grid={this.state.grid} />
       </div>
     );

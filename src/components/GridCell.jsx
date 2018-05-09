@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import './GridCell.css';
 
 export default class GridCell extends Component {
   render() {
     const cell = this.props.cell;
-    let style = {};
+    let style = {
+      width: '0.75rem',
+      height: '0.75rem'
+    };
     // borders
     if (cell === 'white') {
       style.border = 'black 0.5px solid';
     }
 
     style.backgroundColor = cell;
-    return <div className="cell" style={style} />;
+    return <div style={style} />;
   }
 }

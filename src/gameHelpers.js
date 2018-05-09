@@ -1,9 +1,12 @@
 // game helpers
 export default {
-  snake: { height: 10, position: 2 },
+  snake: [{ height: 10, position: 2 }],
   fruit: { height: 40, position: 22 },
+  createSnakeSegment: (grid, segment) => {
+    grid[segment.height][segment.position] = 'green';
+  },
   createGrid: () => {
-    let grid = [];
+    const grid = [];
     for (let i = 0; i < 60; i++) {
       let row;
       // top row
@@ -14,14 +17,14 @@ export default {
         row = createGridRow('black');
       }
       row[0] = 'white'; // first column
-      row[30] = 'white'; // last column
+      row[29] = 'white'; // last column
       grid.push(row);
     }
     return grid;
   },
   createGridCopy: gridCopy => {
     for (let i = 0; i < 60; i++) {
-      gridCopy.push(new Array(30).fill('black'));
+      gridCopy.push(createGridRow('black'));
     }
   },
   createBorders: gridCopy => {
@@ -50,25 +53,26 @@ export default {
     }
     return direction;
   },
-  // CHANGE ME
-  moveSnake: (gridCopy, snakeCopy, direction) => {
+  moveSnakeSegment: (gridCopy, segment, direction) => {
+    let gridPositionAndHeight;
     if (direction === 'left') {
-      return gridCopy[snakeCopy.height][snakeCopy.position--];
+      gridPositionAndHeight = gridCopy[segment.height][segment.position--];
     } else if (direction === 'right') {
-      return gridCopy[snakeCopy.height][snakeCopy.position++];
+      gridPositionAndHeight = gridCopy[segment.height][segment.position++];
     } else if (direction === 'up') {
-      return gridCopy[snakeCopy.height--][snakeCopy.position];
+      gridPositionAndHeight = gridCopy[segment.height--][segment.position];
     } else if (direction === 'down') {
-      return gridCopy[snakeCopy.height++][snakeCopy.position];
+      gridPositionAndHeight = gridCopy[segment.height++][segment.position];
     }
+
+    return gridPositionAndHeight;
   },
-  // CHANGE ME
   checkWallCrash: (snakeCopy, setState) => {
     if (
-      snakeCopy.height < 1 ||
-      snakeCopy.height > 58 ||
-      snakeCopy.position < 1 ||
-      snakeCopy.position > 28
+      snakeCopy[0].height < 1 ||
+      snakeCopy[0].height > 58 ||
+      snakeCopy[0].position < 1 ||
+      snakeCopy[0].position > 28
     ) {
       setState({ crashed: true });
     }
