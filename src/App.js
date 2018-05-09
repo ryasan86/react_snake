@@ -7,17 +7,16 @@ class App extends Component {
   constructor() {
     super();
     const grid = gameHelpers.createGrid();
-    const snake = gameHelpers.snake;
+    const snakeX = gameHelpers.snakeX;
+    const snakeY = gameHelpers.snakeY;
     const fruit = gameHelpers.fruit;
-    snake.forEach(segment => {
-      gameHelpers.createSnakeSegment(grid, segment);
-    });
+    grid[snakeX][snakeY] = 'green';
     grid[fruit.height][fruit.position] = 'red';
     this.state = {
       grid,
-      snake,
+      snakeX,
+      snakeY,
       fruit,
-      direction: 'right',
       crashed: false
     };
     this.timer = setInterval(() => {
@@ -27,39 +26,28 @@ class App extends Component {
       }
       // copy of grid to change
       const gridCopy = [];
-      const snakeCopy = this.state.snake;
+      const snakeXCopy = this.state.snakeX;
+      const snakeYCopy = this.state.snakeY;
       const fruitCopy = this.state.fruit;
-      const direction = this.state.direction;
 
-      gameHelpers.createGridCopy(gridCopy);
-      gameHelpers.createBorders(gridCopy);
-      snakeCopy.forEach(segment => {
-        gameHelpers.moveSnakeSegment(gridCopy, segment, direction);
-      });
-      gameHelpers.checkWallCrash(snakeCopy, this.setState.bind(this));
+      gameHelpers.createGrid(gridCopy);
+      gameHelpers.checkWallCrash(
+        snakeXCopy,
+        snakeYCopy,
+        this.setState.bind(this)
+      );
 
-      // console.log(
-      //   `height: ${snakeCopy[0].height} position: ${snakeCopy[0].position}`
-      // );
-      if (
-        snakeCopy[0].height === fruitCopy.height &&
-        snakeCopy[0].position === fruitCopy.position
-      ) {
-        console.log('eat fruit');
-      }
-
-      snakeCopy.forEach(segment => {
-        gridCopy[segment.height][segment.position] = 'green';
-      });
+      gridCopy[snakeXCopy][snakeYCopy] = 'green';
       gridCopy[fruitCopy.height][fruitCopy.position] = 'red';
 
       // change game data
       this.setState({
         grid: gridCopy,
-        snake: snakeCopy,
+        snakeX: snakeXCopy,
+        snakeY: snakeYCopy,
         fruit: fruitCopy
       });
-    }, 750);
+    }, 5000);
   }
 
   componentDidMount() {

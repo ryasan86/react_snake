@@ -1,45 +1,30 @@
 // game helpers
 export default {
-  snake: [{ height: 10, position: 2 }],
+  snakeX: 2,
+  snakeY: 2,
   fruit: { height: 40, position: 22 },
-  createSnakeSegment: (grid, segment) => {
-    grid[segment.height][segment.position] = 'green';
-  },
-  createGrid: () => {
-    const grid = [];
+  createGrid: (grid = []) => {
     for (let i = 0; i < 60; i++) {
-      let row;
-      // top row
-      if (i === 0 || i === 59) {
-        row = createGridRow('white');
-        // bottom row
-      } else {
-        row = createGridRow('black');
-      }
-      row[0] = 'white'; // first column
-      row[29] = 'white'; // last column
-      grid.push(row);
+      grid.push(createGridRow('black'));
     }
     return grid;
   },
-  createGridCopy: gridCopy => {
-    for (let i = 0; i < 60; i++) {
-      gridCopy.push(createGridRow('black'));
+  createCell: (cell, x, y) => {
+    let style = {
+      width: '0.75rem',
+      height: '0.75rem'
+    };
+    // wall
+    if (x === 0 || x === 29 || y === 0 || y === 59) {
+      cell = 'white';
     }
-  },
-  createBorders: gridCopy => {
-    for (let i = 0; i < gridCopy.length; i++) {
-      for (let j = 0; j < gridCopy[i].length; j++) {
-        if (
-          i === 0 ||
-          i === gridCopy.length - 1 ||
-          j === 0 ||
-          j === gridCopy[i].length - 1
-        ) {
-          gridCopy[i][j] = 'white';
-        }
-      }
-    }
+
+    style.border = 'black 1px solid';
+    style.backgroundColor = cell;
+    return {
+      cell,
+      style
+    };
   },
   changeSnakeDirection: (e, direction) => {
     if (e.keyCode === 65) {
@@ -53,27 +38,9 @@ export default {
     }
     return direction;
   },
-  moveSnakeSegment: (gridCopy, segment, direction) => {
-    let gridPositionAndHeight;
-    if (direction === 'left') {
-      gridPositionAndHeight = gridCopy[segment.height][segment.position--];
-    } else if (direction === 'right') {
-      gridPositionAndHeight = gridCopy[segment.height][segment.position++];
-    } else if (direction === 'up') {
-      gridPositionAndHeight = gridCopy[segment.height--][segment.position];
-    } else if (direction === 'down') {
-      gridPositionAndHeight = gridCopy[segment.height++][segment.position];
-    }
-
-    return gridPositionAndHeight;
-  },
-  checkWallCrash: (snakeCopy, setState) => {
-    if (
-      snakeCopy[0].height < 1 ||
-      snakeCopy[0].height > 58 ||
-      snakeCopy[0].position < 1 ||
-      snakeCopy[0].position > 28
-    ) {
+  moveSnakeSegment: (gridCopy, segment, direction) => {},
+  checkWallCrash: (snakeX, snakeY, setState) => {
+    if (snakeY < 1 || snakeY > 58 || snakeX < 1 || snakeX > 28) {
       setState({ crashed: true });
     }
   }

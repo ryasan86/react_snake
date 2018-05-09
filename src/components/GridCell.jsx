@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
+import gameHelpers from './../gameHelpers';
 
 export default class GridCell extends Component {
   render() {
-    const cell = this.props.cell;
-    let style = {
-      width: '0.75rem',
-      height: '0.75rem'
-    };
-    // borders
-    if (cell === 'white') {
-      style.border = 'black 0.5px solid';
-    }
+    let { cell, x, y } = this.props;
+    const createCell = gameHelpers.createCell(cell, x, y);
 
-    style.backgroundColor = cell;
-    return <div style={style} />;
+    return <div style={createCell.style} id={`${x}-${y}`} />;
   }
 }
