@@ -1,6 +1,6 @@
 // game helpers
 export default {
-  snake: { height: 55, position: 2 },
+  snake: { height: 38, position: 22 },
   fruit: { height: 40, position: 22 },
   createGrid: () => {
     let grid = [];
@@ -50,6 +50,7 @@ export default {
     }
     return direction;
   },
+  // CHANGE ME
   moveSnake: (gridCopy, snakeCopy, direction) => {
     if (direction === 'left') {
       return gridCopy[snakeCopy.height][snakeCopy.position--];
@@ -61,6 +62,7 @@ export default {
       return gridCopy[snakeCopy.height++][snakeCopy.position];
     }
   },
+  // CHANGE ME
   checkWallCrash: (snakeCopy, setState) => {
     if (
       snakeCopy.height < 1 ||

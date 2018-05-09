@@ -7,8 +7,10 @@ class App extends Component {
   constructor() {
     super();
     const grid = gameHelpers.createGrid();
+    // CHANGE ME
     const snake = gameHelpers.snake;
     const fruit = gameHelpers.fruit;
+    // CHANGE ME
     grid[snake.height][snake.position] = 'green';
     grid[fruit.height][fruit.position] = 'red';
     this.state = {
@@ -33,7 +35,14 @@ class App extends Component {
       gameHelpers.createBorders(gridCopy);
       gameHelpers.moveSnake(gridCopy, snakeCopy, direction);
       gameHelpers.checkWallCrash(snakeCopy, this.setState.bind(this));
+      // eat fruit
+      if (
+        snakeCopy.height === fruitCopy.height &&
+        snakeCopy.position === fruitCopy.position
+      ) {
+      }
 
+      // set snake and fruit
       gridCopy[snakeCopy.height][snakeCopy.position] = 'green';
       gridCopy[fruitCopy.height][fruitCopy.position] = 'red';
 
@@ -68,6 +77,7 @@ class App extends Component {
         }}
         onKeyDown={e => this.handleSnakeDirection(e)}
       >
+        <h1 align="center">Still Building This :D</h1>
         <Grid grid={this.state.grid} />
       </div>
     );
