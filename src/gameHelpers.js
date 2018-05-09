@@ -1,6 +1,6 @@
 // game helpers
 export default {
-  snake: { height: 38, position: 22 },
+  snake: { height: 10, position: 2 },
   fruit: { height: 40, position: 22 },
   createGrid: () => {
     let grid = [];
