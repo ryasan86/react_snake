@@ -18,26 +18,21 @@ class App extends Component {
       direction: 'right',
       crashed: false
     };
-    console.log(grid);
     this.timer = setInterval(() => {
+      if (this.state.crashed) {
+        clearInterval(this.timer);
+        return;
+      }
       // copy of grid to change
       let gridCopy = [];
       let snakeCopy = this.state.snake;
       let fruitCopy = this.state.fruit;
       let direction = this.state.direction;
-      // create grid
+
       gameHelpers.createGridCopy(gridCopy);
-      // create borders
       gameHelpers.createBorders(gridCopy);
-
       gameHelpers.moveSnake(gridCopy, snakeCopy, direction);
-
-      // check crash
-      for (let i = 0; i < gridCopy.length; i++) {
-        for (let j = 0; j < gridCopy[i].length; j++) {
-          
-        }
-      }
+      gameHelpers.checkWallCrash(snakeCopy, this.setState.bind(this));
 
       gridCopy[snakeCopy.height][snakeCopy.position] = 'green';
       gridCopy[fruitCopy.height][fruitCopy.position] = 'red';
