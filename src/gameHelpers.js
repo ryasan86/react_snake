@@ -6,7 +6,14 @@ export default {
   tailX: [this.snakeX],
   tailY: [this.snakeY],
   fruit: { height: 40, position: 22 },
-  updateTail: () => {},
+  updateTail: (lengthCopy, tailXCopy, tailYCopy, snakeXCopy, snakeYCopy) => {
+    for (let i = lengthCopy; i > 0; i--) {
+      tailXCopy[i] = tailXCopy[i - 1];
+      tailYCopy[i] = tailYCopy[i - 1];
+    }
+    tailXCopy[0] = snakeXCopy;
+    tailYCopy[0] = snakeYCopy;
+  },
   updatePosition: (direction, snakeXCopy, snakeYCopy) => {
     if (direction === 'right') {
       snakeXCopy++;
@@ -20,7 +27,7 @@ export default {
     return {
       snakeXCopy,
       snakeYCopy
-    }
+    };
   },
   createGrid: (grid = []) => {
     for (let i = 0; i < 60; i++) {
@@ -46,13 +53,14 @@ export default {
     };
   },
   setDirection: (e, direction) => {
-    if (e.keyCode === 65 && direction !== 'right') {
+    const key = e.keyCode;
+    if (key === 65 && direction !== 'right') {
       direction = 'left';
-    } else if (e.keyCode === 68 && direction !== 'left') {
+    } else if (key === 68 && direction !== 'left') {
       direction = 'right';
-    } else if (e.keyCode === 87 && direction !== 'down') {
+    } else if (key === 87 && direction !== 'down') {
       direction = 'up';
-    } else if (e.keyCode === 83 && direction !== 'up') {
+    } else if (key === 83 && direction !== 'up') {
       direction = 'down';
     }
     return direction;
