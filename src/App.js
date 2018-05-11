@@ -6,58 +6,108 @@ import Grid from './components/Grid';
 class App extends Component {
   constructor() {
     super();
-    const grid = gameHelpers.createGrid();
-    const snakeX = gameHelpers.snakeX;
-    const snakeY = gameHelpers.snakeY;
-    const fruit = gameHelpers.fruit;
-    grid[snakeX][snakeY] = 'green';
-    grid[fruit.height][fruit.position] = 'red';
-    this.state = {
-      grid,
+    const {
+      createGrid,
+      length,
       snakeX,
       snakeY,
+      tailX,
+      tailY,
       fruit,
+      direction,
+      crashed
+    } = gameHelpers;
+    const grid = createGrid();
+
+    this.state = {
+      grid,
+      length,
+      snakeX,
+      snakeY,
+      tailX,
+      tailY,
+      fruit,
+      direction: 'right',
       crashed: false
     };
+
+    grid[fruit.height][fruit.position] = 'red';
+    grid[snakeY][snakeX] = 'green';
+
     this.timer = setInterval(() => {
       if (this.state.crashed) {
         clearInterval(this.timer);
         return;
       }
-      // copy of grid to change
+      // copy of game settings to change
       const gridCopy = [];
-      const snakeXCopy = this.state.snakeX;
-      const snakeYCopy = this.state.snakeY;
-      const fruitCopy = this.state.fruit;
+      const {
+        length,
+        snakeX,
+        snakeY,
+        tailX,
+        tailY,
+        fruit,
+        direction
+      } = this.state;
+      const lengthCopy = length;
+      let snakeXCopy = snakeX;
+      let snakeYCopy = snakeY;
+      let tailXCopy = tailX;
+      let tailYCopy = tailY;
+      const fruitCopy = fruit;
 
+      // create map
       gameHelpers.createGrid(gridCopy);
+
       gameHelpers.checkWallCrash(
         snakeXCopy,
         snakeYCopy,
         this.setState.bind(this)
       );
+      console.log(this.state.crashed);
+      // update tail
+      // function updateTail() {
+      //   for (let i = lengthCopy; i > 0; i--) {
+      //     tailXCopy[i] = tailXCopy[i - 1];
+      //     tailYCopy[i] = tailYCopy[i - 1];
+      //   }
+      //   tailXCopy[0] = snakeXCopy;
+      //   tailYCopy[0] = snakeYCopy;
+      // }
+      
+      // updateTail();
+      // set the last segment of the tail to black before moving snake
+      snakeXCopy = gameHelpers.updatePosition(direction, snakeXCopy, null)
+        .snakeXCopy;
+      snakeYCopy = gameHelpers.updatePosition(direction, null, snakeYCopy)
+        .snakeYCopy;
 
-      gridCopy[snakeXCopy][snakeYCopy] = 'green';
+      // update position
+
+      gridCopy[snakeYCopy][snakeXCopy] = 'green';
       gridCopy[fruitCopy.height][fruitCopy.position] = 'red';
 
-      // change game data
       this.setState({
         grid: gridCopy,
+        length: lengthCopy,
         snakeX: snakeXCopy,
         snakeY: snakeYCopy,
+        tailX: tailXCopy,
+        tailY: tailYCopy,
         fruit: fruitCopy
       });
-    }, 5000);
+    }, 750);
   }
 
   componentDidMount() {
     this.divFocus.focus();
   }
 
-  handleSnakeDirection(e) {
+  handleKeyPress(e) {
     const { direction } = this.state;
     this.setState({
-      direction: gameHelpers.changeSnakeDirection(e, direction)
+      direction: gameHelpers.setDirection(e, direction)
     });
   }
 
@@ -69,7 +119,7 @@ class App extends Component {
         ref={div => {
           this.divFocus = div;
         }}
-        onKeyDown={e => this.handleSnakeDirection(e)}
+        onKeyDown={e => this.handleKeyPress(e)}
       >
         <Grid grid={this.state.grid} />
       </div>

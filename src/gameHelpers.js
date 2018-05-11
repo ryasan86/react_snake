@@ -1,8 +1,27 @@
 // game helpers
 export default {
+  length: 2,
   snakeX: 2,
   snakeY: 2,
+  tailX: [this.snakeX],
+  tailY: [this.snakeY],
   fruit: { height: 40, position: 22 },
+  updateTail: () => {},
+  updatePosition: (direction, snakeXCopy, snakeYCopy) => {
+    if (direction === 'right') {
+      snakeXCopy++;
+    } else if (direction === 'left') {
+      snakeXCopy--;
+    } else if (direction === 'up') {
+      snakeYCopy--;
+    } else if (direction === 'down') {
+      snakeYCopy++;
+    }
+    return {
+      snakeXCopy,
+      snakeYCopy
+    }
+  },
   createGrid: (grid = []) => {
     for (let i = 0; i < 60; i++) {
       grid.push(createGridRow('black'));
@@ -26,19 +45,18 @@ export default {
       style
     };
   },
-  changeSnakeDirection: (e, direction) => {
-    if (e.keyCode === 65) {
+  setDirection: (e, direction) => {
+    if (e.keyCode === 65 && direction !== 'right') {
       direction = 'left';
-    } else if (e.keyCode === 68) {
+    } else if (e.keyCode === 68 && direction !== 'left') {
       direction = 'right';
-    } else if (e.keyCode === 87) {
+    } else if (e.keyCode === 87 && direction !== 'down') {
       direction = 'up';
-    } else if (e.keyCode === 83) {
+    } else if (e.keyCode === 83 && direction !== 'up') {
       direction = 'down';
     }
     return direction;
   },
-  moveSnakeSegment: (gridCopy, segment, direction) => {},
   checkWallCrash: (snakeX, snakeY, setState) => {
     if (snakeY < 1 || snakeY > 58 || snakeX < 1 || snakeX > 28) {
       setState({ crashed: true });
