@@ -1,13 +1,7 @@
 // game helpers
 export default {
-  length: 2,
-  snakeX: 2,
-  snakeY: 2,
-  tailX: [this.snakeX],
-  tailY: [this.snakeY],
-  fruit: { height: 40, position: 22 },
-  updateTail: (lengthCopy, tailXCopy, tailYCopy, snakeXCopy, snakeYCopy) => {
-    for (let i = lengthCopy; i > 0; i--) {
+  updateTail: (length, tailXCopy, tailYCopy, snakeXCopy, snakeYCopy) => {
+    for (let i = length; i > 0; i--) {
       tailXCopy[i] = tailXCopy[i - 1];
       tailYCopy[i] = tailYCopy[i - 1];
     }
@@ -30,18 +24,18 @@ export default {
     };
   },
   createGrid: (grid = []) => {
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 40; i++) {
       grid.push(createGridRow('black'));
     }
     return grid;
   },
   createCell: (cell, x, y) => {
     let style = {
-      width: '0.75rem',
-      height: '0.75rem'
+      width: '1rem',
+      height: '1rem'
     };
     // wall
-    if (x === 0 || x === 29 || y === 0 || y === 59) {
+    if (x === 0 || x === 29 || y === 0 || y === 39) {
       cell = 'white';
     }
 
@@ -65,11 +59,22 @@ export default {
     }
     return direction;
   },
-  checkWallCrash: (snakeX, snakeY, setState) => {
-    if (snakeY < 1 || snakeY > 58 || snakeX < 1 || snakeX > 28) {
+  checkWallCrash: (snakeXCopy, snakeYCopy, setState) => {
+    if (
+      snakeYCopy < 1 ||
+      snakeYCopy > 38 ||
+      snakeXCopy < 1 ||
+      snakeXCopy > 28
+    ) {
       setState({ crashed: true });
     }
-  }
+  },
+  createFruit: () => {
+
+  },
+  checkFruitCollision: () => {
+
+  },
 };
 
 // helper helpers

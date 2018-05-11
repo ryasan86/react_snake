@@ -6,63 +6,59 @@ import Grid from './components/Grid';
 class App extends Component {
   constructor() {
     super();
-    const { createGrid, length, snakeX, snakeY, tailX, tailY, fruit, direction, crashed } = gameHelpers;
-    const grid = createGrid();
-
+    // initialize grid
+    const grid = gameHelpers.createGrid();
     this.state = {
       grid,
-      length,
-      snakeX,
-      snakeY,
-      tailX,
-      tailY,
-      fruit,
+      length: 0,
+      snakeX: 2,
+      snakeY: 2,
+      tailX: [this.snakeX],
+      tailY: [this.snakeY],
+      fruit: { height: 30, position: 22 },
       direction: 'right',
-      crashed: false
+      crashed: false,
+      score: 0
     };
+    const { snakeX, snakeY, fruit } = this.state;
 
-    grid[fruit.height][fruit.position] = 'red';
     grid[snakeY][snakeX] = 'green';
+    grid[fruit.height][fruit.position] = 'red';
 
     this.timer = setInterval(() => {
       if (this.state.crashed) {
         clearInterval(this.timer);
         return;
       }
-      // copy of game settings to change
+      // copy of game settings to set state at each interval
       const gridCopy = [];
-      const { length, snakeX, snakeY, tailX, tailY, fruit, direction } = this.state;
-      const lengthCopy = length;
-      let snakeXCopy = snakeX;
-      let snakeYCopy = snakeY;
+      const { length, snakeX, snakeY, tailX, tailY, fruit, direction, score } = this.state;
+      let lengthCopy = length;
+      let snakeXC = snakeX;
+      let snakeYC = snakeY;
       let tailXCopy = tailX;
       let tailYCopy = tailY;
-      const fruitCopy = fruit;
+      let fruitCopy = fruit;
+      let scoreCopy = score;
+      let setState = this.setState.bind(this);
 
-      // create map
+      // map
       gameHelpers.createGrid(gridCopy);
-      /********** START **********/
-      
       // update tail
-      gameHelpers.updateTail(lengthCopy, tailXCopy, tailYCopy, snakeXCopy, snakeYCopy);
-      // set the last segment of the tail to black before moving snake
-      snakeXCopy = gameHelpers.updatePosition(direction, snakeXCopy, null)
-        .snakeXCopy;
-      snakeYCopy = gameHelpers.updatePosition(direction, null, snakeYCopy)
-        .snakeYCopy;
+      gameHelpers.updateTail(lengthCopy, tailXCopy, tailYCopy, snakeXC, snakeYC);
+      // update snake
+      let { snakeXCopy, snakeYCopy } = gameHelpers.updatePosition(direction, snakeXC, snakeYC);
+      // check for wall collision
+      gameHelpers.checkWallCrash(snakeXCopy, snakeYCopy, setState);
+      // check for collisions with self
+      /* TODO */
+      // check for collisions with fruit
 
-      for (let i = 0; i < tailXCopy.length; i++) {
-        if (tailXCopy[i] && tailYCopy[i]) {
-          gridCopy[tailYCopy[i]][tailXCopy[i]] = 'green';
-        }
-      }
-      // update position
-
+      tailXCopy.forEach((segment, i) => {
+        gridCopy[tailYCopy[i]][segment] = 'green';
+      });
       gridCopy[snakeYCopy][snakeXCopy] = 'green';
       gridCopy[fruitCopy.height][fruitCopy.position] = 'red';
-
-      /********** END ***********/
-
 
       this.setState({
         grid: gridCopy,
@@ -71,9 +67,10 @@ class App extends Component {
         snakeY: snakeYCopy,
         tailX: tailXCopy,
         tailY: tailYCopy,
-        fruit: fruitCopy
+        fruit: fruitCopy,
+        score: scoreCopy
       });
-    }, 750);
+    }, 100);
   }
 
   componentDidMount() {
@@ -97,6 +94,7 @@ class App extends Component {
         }}
         onKeyDown={e => this.handleKeyPress(e)}
       >
+        <h1 align="center">Score: {this.state.score}</h1>
         <Grid grid={this.state.grid} />
       </div>
     );
