@@ -15,14 +15,14 @@ class App extends Component {
       snakeY: 2,
       tailX: [this.snakeX],
       tailY: [this.snakeY],
-      fruit: { height: 30, position: 22 },
+      fruit: { height: 15, position: 15 },
       direction: 'right',
       gameOver: false,
       score: 0
     };
     const { snakeX, snakeY, fruit } = this.state;
 
-    grid[snakeY][snakeX] = 'green';
+    grid[snakeY][snakeX] = '#0099ff';
     grid[fruit.height][fruit.position] = 'red';
 
     this.timer = setInterval(() => {
@@ -50,14 +50,14 @@ class App extends Component {
       // check for wall collision
       gameHelpers.checkWallCollision(snakeXCopy, snakeYCopy, setState);
       // check for collisions with self
-      /* TODO */
+      gameHelpers.checkSelfCollision(snakeXCopy, snakeYCopy, tailXCopy, tailYCopy, setState);
       // check for collisions with fruit
       ({ lengthCopy, scoreCopy, fruitCopy } = gameHelpers.checkFruitCollision(gridCopy, lengthCopy, snakeXCopy, snakeYCopy, fruitCopy, scoreCopy));
-
+      
       tailXCopy.forEach((segment, i) => {
-        gridCopy[tailYCopy[i]][segment] = 'green';
+        gridCopy[tailYCopy[i]][segment] = '#0099ff';
       });
-      gridCopy[snakeYCopy][snakeXCopy] = 'green';
+      gridCopy[snakeYCopy][snakeXCopy] = '#0099ff';
       gridCopy[fruitCopy.height][fruitCopy.position] = 'red';
 
       this.setState({

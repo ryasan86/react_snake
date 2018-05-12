@@ -1,22 +1,21 @@
 // game helpers
 export default {
   createGrid: (grid = []) => {
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 25; i++) {
       grid.push(createGridRow('black'));
     }
     return grid;
   },
   createCell: (cell, x, y) => {
     let style = {
-      width: '1rem',
-      height: '1rem'
+      width: '1.5rem',
+      height: '1.5rem'
     };
     // wall
-    if (x === 0 || x === 29 || y === 0 || y === 39) {
+    if (x === 0 || x === 24 || y === 0 || y === 24) {
       cell = 'white';
     }
 
-    style.border = 'black 1px solid';
     style.backgroundColor = cell;
     return {
       cell,
@@ -62,12 +61,25 @@ export default {
   checkWallCollision: (snakeXCopy, snakeYCopy, setState) => {
     if (
       snakeYCopy < 1 ||
-      snakeYCopy > 38 ||
+      snakeYCopy > 23 ||
       snakeXCopy < 1 ||
-      snakeXCopy > 28
+      snakeXCopy > 23
     ) {
       setState({ gameOver: true });
     }
+  },
+  checkSelfCollision: (
+    snakeXCopy,
+    snakeYCopy,
+    tailXCopy,
+    tailYCopy,
+    setState
+  ) => {
+    tailXCopy.forEach((segment, i) => {
+      if (segment === snakeXCopy && tailYCopy[i] === snakeYCopy) {
+        setState({ gameOver: true });
+      }
+    });
   },
   checkFruitCollision: (
     gridCopy,
@@ -88,7 +100,7 @@ export default {
 
 // helper helpers
 const createGridRow = color => {
-  return new Array(30).fill(color);
+  return new Array(25).fill(color);
 };
 
 const random = (max, min) => {
@@ -96,10 +108,11 @@ const random = (max, min) => {
 };
 
 const createFruit = (gridCopy, fruitCopy, isBlackCell = false) => {
+  /* THIS DOES NOT WORK */
   while (isBlackCell === false) {
-    let randHeight = random(38, 1);
-    let randPosition = random(28, 1);
-    if (gridCopy[randHeight][randPosition] === 'black') {
+    let randHeight = random(22, 2);
+    let randPosition = random(22, 2);
+    if (gridCopy[randHeight][randPosition] === 'black' ) {
       fruitCopy.height = randHeight;
       fruitCopy.position = randPosition;
       isBlackCell = true;
