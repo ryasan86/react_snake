@@ -17,7 +17,7 @@ class App extends Component {
       tailY: [this.snakeY],
       fruit: { height: 30, position: 22 },
       direction: 'right',
-      crashed: false,
+      gameOver: false,
       score: 0
     };
     const { snakeX, snakeY, fruit } = this.state;
@@ -26,33 +26,33 @@ class App extends Component {
     grid[fruit.height][fruit.position] = 'red';
 
     this.timer = setInterval(() => {
-      if (this.state.crashed) {
+      if (this.state.gameOver) {
         clearInterval(this.timer);
         return;
       }
       // copy of game settings to set state at each interval
-      const gridCopy = [];
       const { length, snakeX, snakeY, tailX, tailY, fruit, direction, score } = this.state;
+      const setState = this.setState.bind(this);
+      const gridCopy = gameHelpers.createGrid();
       let lengthCopy = length;
-      let snakeXC = snakeX;
-      let snakeYC = snakeY;
+      let snakeXCopy = snakeX;
+      let snakeYCopy = snakeY;
       let tailXCopy = tailX;
       let tailYCopy = tailY;
       let fruitCopy = fruit;
       let scoreCopy = score;
-      let setState = this.setState.bind(this);
 
-      // map
-      gameHelpers.createGrid(gridCopy);
+      
       // update tail
-      gameHelpers.updateTail(lengthCopy, tailXCopy, tailYCopy, snakeXC, snakeYC);
+      gameHelpers.updateTail(lengthCopy, tailXCopy, tailYCopy, snakeXCopy, snakeYCopy);
       // update snake
-      let { snakeXCopy, snakeYCopy } = gameHelpers.updatePosition(direction, snakeXC, snakeYC);
+      ({ snakeXCopy, snakeYCopy } = gameHelpers.updatePosition(direction, snakeXCopy, snakeYCopy, setState));
       // check for wall collision
-      gameHelpers.checkWallCrash(snakeXCopy, snakeYCopy, setState);
+      gameHelpers.checkWallCollision(snakeXCopy, snakeYCopy, setState);
       // check for collisions with self
       /* TODO */
       // check for collisions with fruit
+      ({ lengthCopy, scoreCopy, fruitCopy } = gameHelpers.checkFruitCollision(gridCopy, lengthCopy, snakeXCopy, snakeYCopy, fruitCopy, scoreCopy));
 
       tailXCopy.forEach((segment, i) => {
         gridCopy[tailYCopy[i]][segment] = 'green';
