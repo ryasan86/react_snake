@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import gameHelpers from './gameHelpers';
-import './App.css';
 import Grid from './components/Grid';
 
 class App extends Component {
@@ -26,12 +25,12 @@ class App extends Component {
     grid[fruit.height][fruit.position] = 'red';
 
     this.timer = setInterval(() => {
-      if (this.state.gameOver) {
+      // copy of game settings to set state at each interval
+      const { length, snakeX, snakeY, tailX, tailY, fruit, direction, score, gameOver } = this.state;
+      if (gameOver) {
         clearInterval(this.timer);
         return;
       }
-      // copy of game settings to set state at each interval
-      const { length, snakeX, snakeY, tailX, tailY, fruit, direction, score } = this.state;
       const setState = this.setState.bind(this);
       const gridCopy = gameHelpers.createGrid();
       let lengthCopy = length;
@@ -42,7 +41,6 @@ class App extends Component {
       let fruitCopy = fruit;
       let scoreCopy = score;
 
-      
       // update tail
       gameHelpers.updateTail(lengthCopy, tailXCopy, tailYCopy, snakeXCopy, snakeYCopy);
       // update snake
@@ -85,6 +83,13 @@ class App extends Component {
   }
 
   render() {
+    let resume = <h1 align="center">Score: {this.state.score}</h1>;
+    let gameOver = (
+      <div align="center">
+        <h1>Final Score: {this.state.score}</h1>
+      </div>
+    );
+
     return (
       <div
         className="app container"
@@ -92,13 +97,13 @@ class App extends Component {
         ref={div => {
           this.divFocus = div;
         }}
-        onKeyDown={e => this.handleKeyPress(e)}
-      >
-        <h1 align="center">Score: {this.state.score}</h1>
+        onKeyDown={e => this.handleKeyPress(e)}>
+        {this.state.gameOver ? gameOver : resume}
         <Grid grid={this.state.grid} />
       </div>
     );
   }
+
 }
 
 export default App;
