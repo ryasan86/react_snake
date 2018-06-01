@@ -9,15 +9,15 @@ class App extends Component {
     const grid = gameHelpers.createGrid();
     this.state = {
       grid,
-      length: 0,
-      snakeX: 2,
-      snakeY: 2,
-      tailX: [this.snakeX],
-      tailY: [this.snakeY],
-      fruit: { height: 15, position: 15 },
+      length   : 0,
+      snakeX   : 2,
+      snakeY   : 2,
+      tailX    : [this.snakeX],
+      tailY    : [this.snakeY],
+      fruit    : { height: 15, position: 15 },
       direction: 'right',
-      gameOver: false,
-      score: 0
+      gameOver : false,
+      score    : 0
     };
     const { snakeX, snakeY, fruit } = this.state;
 
@@ -31,15 +31,15 @@ class App extends Component {
         clearInterval(this.timer);
         return;
       }
-      const setState = this.setState.bind(this);
-      const gridCopy = gameHelpers.createGrid();
-      let lengthCopy = length;
-      let snakeXCopy = snakeX;
-      let snakeYCopy = snakeY;
-      let tailXCopy = tailX;
-      let tailYCopy = tailY;
-      let fruitCopy = fruit;
-      let scoreCopy = score;
+      const setState   = this.setState.bind(this);
+      const gridCopy   = gameHelpers.createGrid();
+      let   lengthCopy = length;
+      let   snakeXCopy = snakeX;
+      let   snakeYCopy = snakeY;
+      let   tailXCopy  = tailX;
+      let   tailYCopy  = tailY;
+      let   fruitCopy  = fruit;
+      let   scoreCopy  = score;
 
       // update tail
       gameHelpers.updateTail(lengthCopy, tailXCopy, tailYCopy, snakeXCopy, snakeYCopy);
