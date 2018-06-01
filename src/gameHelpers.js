@@ -1,12 +1,12 @@
 // game helpers
 export default {
-  createGrid: (grid = []) => {
+  createGrid(grid = []) {
     for (let i = 0; i < 25; i++) {
       grid.push(createGridRow('black'));
     }
     return grid;
   },
-  createCell: (cell, x, y) => {
+  createCell(cell, x, y) {
     let style = {
       width: '1.5rem',
       height: '1.5rem'
@@ -22,7 +22,7 @@ export default {
       style
     };
   },
-  updateTail: (length, tailXCopy, tailYCopy, snakeXCopy, snakeYCopy) => {
+  updateTail(length, tailXCopy, tailYCopy, snakeXCopy, snakeYCopy) {
     for (let i = length; i > 0; i--) {
       tailXCopy[i] = tailXCopy[i - 1];
       tailYCopy[i] = tailYCopy[i - 1];
@@ -30,7 +30,7 @@ export default {
     tailXCopy[0] = snakeXCopy;
     tailYCopy[0] = snakeYCopy;
   },
-  updatePosition: (direction, snakeXCopy, snakeYCopy) => {
+  updatePosition(direction, snakeXCopy, snakeYCopy) {
     if (direction === 'right') {
       snakeXCopy++;
     } else if (direction === 'left') {
@@ -45,7 +45,7 @@ export default {
       snakeYCopy
     };
   },
-  setDirection: (e, direction) => {
+  setDirection(e, direction) {
     const key = e.keyCode;
     if (key === 65 && direction !== 'right') {
       direction = 'left';
@@ -58,7 +58,7 @@ export default {
     }
     return direction;
   },
-  checkWallCollision: (snakeXCopy, snakeYCopy, setState) => {
+  checkWallCollision(snakeXCopy, snakeYCopy, setState) {
     if (
       snakeYCopy < 1 ||
       snakeYCopy > 23 ||
@@ -68,27 +68,21 @@ export default {
       setState({ gameOver: true });
     }
   },
-  checkSelfCollision: (
-    snakeXCopy,
-    snakeYCopy,
-    tailXCopy,
-    tailYCopy,
-    setState
-  ) => {
+  checkSelfCollision(snakeXCopy, snakeYCopy, tailXCopy, tailYCopy, setState) {
     tailXCopy.forEach((segment, i) => {
       if (segment === snakeXCopy && tailYCopy[i] === snakeYCopy) {
         setState({ gameOver: true });
       }
     });
   },
-  checkFruitCollision: (
+  checkFruitCollision(
     gridCopy,
     lengthCopy,
     snakeXCopy,
     snakeYCopy,
     fruitCopy,
     scoreCopy
-  ) => {
+  ) {
     if (snakeXCopy === fruitCopy.position && snakeYCopy === fruitCopy.height) {
       lengthCopy += 1;
       scoreCopy += 5;
@@ -110,13 +104,13 @@ const random = (max, min) => {
 const createFruit = (gridCopy, fruitCopy, isBlackCell = false) => {
   /* THIS DOES NOT WORK */
   while (isBlackCell === false) {
-    let randHeight   = random(22, 2);
+    let randHeight = random(22, 2);
     let randPosition = random(22, 2);
-    
-    if (gridCopy[randHeight][randPosition] === 'black' ) {
-      fruitCopy.height   = randHeight;
+
+    if (gridCopy[randHeight][randPosition] === 'black') {
+      fruitCopy.height = randHeight;
       fruitCopy.position = randPosition;
-      isBlackCell        = true;
+      isBlackCell = true;
     }
   }
   return fruitCopy;
