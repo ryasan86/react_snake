@@ -6,22 +6,6 @@ export default {
     }
     return grid;
   },
-  createCell(cell, x, y) {
-    let style = {
-      width: '1.5rem',
-      height: '1.5rem'
-    };
-    // wall
-    if (x === 0 || x === 24 || y === 0 || y === 24) {
-      cell = 'white';
-    }
-
-    style.backgroundColor = cell;
-    return {
-      cell,
-      style
-    };
-  },
   updateTail(length, tailXCopy, tailYCopy, snakeXCopy, snakeYCopy) {
     for (let i = length; i > 0; i--) {
       tailXCopy[i] = tailXCopy[i - 1];
@@ -35,10 +19,10 @@ export default {
       snakeXCopy++;
     } else if (direction === 'left') {
       snakeXCopy--;
-    } else if (direction === 'up') {
-      snakeYCopy--;
     } else if (direction === 'down') {
       snakeYCopy++;
+    } else if (direction === 'up') {
+      snakeYCopy--;
     }
     return {
       snakeXCopy,
@@ -59,12 +43,7 @@ export default {
     return direction;
   },
   checkWallCollision(snakeXCopy, snakeYCopy, setState) {
-    if (
-      snakeYCopy < 1 ||
-      snakeYCopy > 23 ||
-      snakeXCopy < 1 ||
-      snakeXCopy > 23
-    ) {
+    if (snakeYCopy < 1 || snakeYCopy > 23 || snakeXCopy < 1 || snakeXCopy > 23) {
       setState({ gameOver: true });
     }
   },
@@ -75,14 +54,7 @@ export default {
       }
     });
   },
-  checkFruitCollision(
-    gridCopy,
-    lengthCopy,
-    snakeXCopy,
-    snakeYCopy,
-    fruitCopy,
-    scoreCopy
-  ) {
+  checkFruitCollision(gridCopy, lengthCopy, snakeXCopy, snakeYCopy, fruitCopy, scoreCopy) {
     if (snakeXCopy === fruitCopy.position && snakeYCopy === fruitCopy.height) {
       lengthCopy += 1;
       scoreCopy += 5;

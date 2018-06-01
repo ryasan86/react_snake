@@ -59,14 +59,14 @@ class App extends Component {
       gridCopy[fruitCopy.height][fruitCopy.position] = 'red';
 
       this.setState({
-        grid: gridCopy,
+        grid  : gridCopy,
         length: lengthCopy,
         snakeX: snakeXCopy,
         snakeY: snakeYCopy,
-        tailX: tailXCopy,
-        tailY: tailYCopy,
-        fruit: fruitCopy,
-        score: scoreCopy
+        tailX : tailXCopy,
+        tailY : tailYCopy,
+        fruit : fruitCopy,
+        score : scoreCopy
       });
     }, 100);
   }
