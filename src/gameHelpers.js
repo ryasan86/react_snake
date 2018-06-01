@@ -76,13 +76,13 @@ const random = (max, min) => {
 const createFruit = (gridCopy, fruitCopy, isBlackCell = false) => {
   /* THIS DOES NOT WORK */
   while (isBlackCell === false) {
-    let randHeight = random(22, 2);
+    let randHeight   = random(22, 2);
     let randPosition = random(22, 2);
 
     if (gridCopy[randHeight][randPosition] === 'black') {
-      fruitCopy.height = randHeight;
+      fruitCopy.height   = randHeight;
       fruitCopy.position = randPosition;
-      isBlackCell = true;
+      isBlackCell        = true;
     }
   }
   return fruitCopy;
